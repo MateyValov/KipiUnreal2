@@ -2,6 +2,7 @@
 
 
 #include "ThirdPersonCharacterBase.h"
+#include "Engine.h"
 
 // Sets default values
 AThirdPersonCharacterBase::AThirdPersonCharacterBase()
@@ -15,7 +16,7 @@ AThirdPersonCharacterBase::AThirdPersonCharacterBase()
 void AThirdPersonCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	setSpawnpoint();
 }
 
 // Called every frame
@@ -28,7 +29,23 @@ void AThirdPersonCharacterBase::Tick(float DeltaTime)
 // Called to bind functionality to input
 void AThirdPersonCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	InputComponent->BindAction("Crouch", IE_Pressed, this, &AThirdPersonCharacterBase::beginCrouch);
+	InputComponent->BindAction("Crouch", IE_Released, this, &AThirdPersonCharacterBase::endCrouch);
+
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+void AThirdPersonCharacterBase::beginCrouch() {
+	isCrouching = true;
+	GEngine->AddOnScreenDebugMessage(-1,5.f,FColor::Green,TEXT("klekna"));
+}
+
+void AThirdPersonCharacterBase::endCrouch() {
+	isCrouching = false;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("stana"));
+
+}
+
+
 
